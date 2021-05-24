@@ -63,6 +63,7 @@ export const Tasks = ({ taskIds, currentListId, reloadComponent }) => {
                     onBlur={() => handleSaveTaskContent(tasks.id, tasks)}
                     onChange={(e) => setTaskContent(e.target.value)}
                     placeholder="Write here"
+                    focusBorderColor="pink.400"
                     defaultValue={tasks.content}
                   />
                 </Box>
@@ -80,7 +81,7 @@ export const Tasks = ({ taskIds, currentListId, reloadComponent }) => {
 }
 
 Tasks.propTypes = {
-  taskIds: PropTypes.number,
+  taskIds: PropTypes.arrayOf(PropTypes.number),
   currentListId: PropTypes.number,
   reloadComponent: PropTypes.func,
 }
