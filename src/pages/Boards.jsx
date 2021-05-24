@@ -26,12 +26,12 @@ import {
   Tag,
 } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
-import { GithubPicker } from 'react-color'
+
 import { AddIcon, CalendarIcon, CloseIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
-import { getBoards, createBoard, removeBoard } from '../utils/api'
-import { useFetch } from '../hooks'
+import { getBoards, createBoard, removeBoard, updateBoard } from '../utils/api'
 import { LabelSelector } from '../components/LabelSelector'
 import { DeleteBoardButton } from '../components/DeleteBoardButton'
+import { EditBoardButton } from '../components/EditBoardButton'
 import { ColorPicker } from '../components/ColorPicker'
 
 const Boards = () => {
@@ -58,11 +58,12 @@ const Boards = () => {
       setIsLoading(false)
     }
   }, [])
-  const handleBoardCreation = async (boardName, boardLabel) => {
+  const handleBoardCreation = async (boardName, boardLabel, boardColor) => {
     const date = new Date()
     await createBoard(
       boardName,
       boardLabel,
+      boardColor,
       date.toLocaleString('en-US', {
         day: 'numeric', // numeric, 2-digit
         year: 'numeric', // numeric, 2-digit
@@ -80,25 +81,8 @@ const Boards = () => {
   const InitialLaunch = ({ createBoard }) => {
     const [boardName, setBoardName] = React.useState('')
     const [boardLabel, setBoardLabel] = React.useState('Work')
-    const [boardColor, setBoardColor] = React.useState('')
-    const handleBoardCreation = (boardName, boardLabel) => {
-      const date = new Date()
-      try {
-        fetch(
-          createBoard(
-            boardName,
-            boardLabel,
-            date.toLocaleString('en-US', {
-              day: 'numeric', // numeric, 2-digit
-              year: 'numeric', // numeric, 2-digit
-              month: 'long', // numeric, 2-digit, long, short, narrow
-            })
-          )
-        ).then((result) => {
-          setIsLoading(true)
-        })
-      } catch (e) {}
-    }
+    const [boardColor, setBoardColor] = React.useState('#03a9f4')
+
     return (
       <Stack as={Box} textAlign="center" spacing={{ base: 8, md: 14 }} py={{ base: 20, md: 36 }}>
         <Heading
@@ -136,7 +120,9 @@ const Boards = () => {
             <Flex>
               <Box p="4">Board color:</Box>
               <Spacer />
-              <Box p="4" bg="green.400" />
+              <Box p="4">
+                <ColorPicker boardColor={boardColor} setBoardColor={setBoardColor} />
+              </Box>
             </Flex>
           </Box>
 
@@ -150,7 +136,7 @@ const Boards = () => {
               transform: 'scale(0.98)',
               borderColor: 'blue.300',
             }}
-            onClick={(e) => createBoard(boardName, boardLabel)}
+            onClick={(e) => createBoard(boardName, boardLabel, boardColor)}
           >
             Create Board !
           </Button>
@@ -167,7 +153,7 @@ const Boards = () => {
   const NewBoard = ({ createBoard }) => {
     const [boardName, setBoardName] = React.useState('')
     const [boardLabel, setBoardLabel] = React.useState('Work')
-    const [boardColor, setBoardColor] = React.useState('')
+    const [boardColor, setBoardColor] = React.useState('#03a9f4')
     const [isOpen, setIsOpen] = React.useState(false)
     const onClose = () => setIsOpen(false)
     const cancelRef = React.useRef()
@@ -215,6 +201,7 @@ const Boards = () => {
                 <Text fontWeight="bold">Board lavel</Text>
                 <LabelSelector p="2" setBoardLabel={setBoardLabel} />
                 <Text fontWeight="bold">Board color</Text>
+                <ColorPicker boardColor={boardColor} setBoardColor={setBoardColor} />
               </AlertDialogBody>
 
               <AlertDialogFooter>
@@ -223,7 +210,7 @@ const Boards = () => {
                 </Button>
                 <Button
                   colorScheme="blue"
-                  onClick={(e) => createBoard(boardName, boardLabel)}
+                  onClick={(e) => createBoard(boardName, boardLabel, boardColor)}
                   ml={3}
                 >
                   Create
@@ -249,8 +236,9 @@ const Boards = () => {
                 h="500px"
                 w="300px"
                 margin="20px"
-                background="red.400"
+                background={board.color}
                 textAlign="center"
+                overflow="clip"
               >
                 <Flex h="30px" p="1">
                   <Tag variant="solid" colorScheme="teal">
@@ -258,6 +246,12 @@ const Boards = () => {
                   </Tag>
                   <Spacer />
                   <Box p="2">
+                    <EditBoardButton
+                      boardData={board}
+                      updateBoard={updateBoard}
+                      getBoards={getBoards}
+                      setBoards={setBoards}
+                    />
                     <DeleteBoardButton
                       boardId={board.id}
                       removeBoard={removeBoard}
