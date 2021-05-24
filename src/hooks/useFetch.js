@@ -1,40 +1,31 @@
-import React from 'react'
-import { getBoards } from '../utils/api'
 
-export const useFetch = () => {
-  const [status, setStatus] = React.useState('loading')
-  const [boards, setBoards] = React.useState([])
+import * as React from 'react'
+
+export const useFetch = (fn1, id) => {
   const [error, setError] = React.useState()
   const [isLoading, setIsLoading] = React.useState(false)
-
-  const [initialPage, setInitialPage] = React.useState(false)
-
+  const [data, setData] = React.useState([])
+  const [reload, setReload] = React.useState(false)
+  const reloadPage = () => setReload(!reload)
   React.useEffect(() => {
     try {
+      setIsLoading(true)
       const fetchData = async () => {
-        const data = await getBoards()
-        setBoards(data)
-        if (data.length === 0) {
-          setInitialPage(true)
-        } else {
-          setInitialPage(false)
-        }
+        const dataFetch = await fn1(id)
+        setData(dataFetch)
       }
-
       fetchData()
     } catch (e) {
-      // do nothing
+      setError(e)
     } finally {
       setIsLoading(false)
     }
-  }, [])
-
+  }, [fn1, id, reload])
   return {
-    boards,
+    data,
     error,
     isLoading,
-    initialPage,
-    setIsLoading,
-    setInitialPage,
+    reloadPage,
+
   }
 }
