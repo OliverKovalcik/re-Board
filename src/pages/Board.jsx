@@ -19,9 +19,8 @@ const Board = () => {
       reloadPage()
     })
   }
-  // NEFUNGUJE
+
   const handleRemoveList = async (currentListId) => {
-    console.log(currentListId)
     await removeTaskGroup(currentListId)
     reloadPage()
   }
