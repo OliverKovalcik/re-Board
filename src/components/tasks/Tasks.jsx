@@ -3,8 +3,8 @@ import { useParams } from 'react-router-dom'
 import { Box, Button, Center, CloseButton, Stack, Textarea, Input } from '@chakra-ui/react'
 import PropTypes from 'prop-types'
 
-import { useFetch } from '../hooks'
-import { getTasks, createTask, removeTask, updateTask } from '../utils/api'
+import { useFetch } from '../../hooks'
+import { getTasks, createTask, removeTask, updateTask } from '../../utils/api'
 
 export const Tasks = ({ taskIds, currentListId, reloadComponent }) => {
   const { id } = useParams()
@@ -72,8 +72,8 @@ export const Tasks = ({ taskIds, currentListId, reloadComponent }) => {
           })}
       {/* Tasks */}
       <Center>
-        <Button onClick={() => handleCreateNewTask()} size="sm">
-          Add
+        <Button onClick={() => handleCreateNewTask()} size="sm" m="2">
+          Add Task
         </Button>
       </Center>
     </>
