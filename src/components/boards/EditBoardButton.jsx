@@ -13,10 +13,10 @@ import {
   Input,
 } from '@chakra-ui/react'
 import { EditIcon } from '@chakra-ui/icons'
-import { ColorPicker } from './ColorPicker'
+import { ColorPicker } from '../common'
 import { LabelSelector } from './LabelSelector'
 
-export const EditBoardButton = ({ boardData, updateBoard, setBoards, getBoards }) => {
+export const EditBoardButton = ({ boardData, updateBoard, setBoards, getBoards, userPrefData }) => {
   const [boardName, setBoardName] = React.useState(boardData.name)
   const [boardLabel, setBoardLabel] = React.useState(boardData.label)
   const [boardColor, setBoardColor] = React.useState(boardData.color)
@@ -62,7 +62,12 @@ export const EditBoardButton = ({ boardData, updateBoard, setBoards, getBoards }
                 value={boardName}
               />
               <Text fontWeight="bold">Board lavel</Text>
-              <LabelSelector p="2" setBoardLabel={setBoardLabel} value={boardLabel} />
+              <LabelSelector
+                p="2"
+                setBoardLabel={setBoardLabel}
+                boardLabel={boardLabel}
+                userPrefData={userPrefData}
+              />
               <Text fontWeight="bold">Board color</Text>
               <ColorPicker boardColor={boardColor} setBoardColor={setBoardColor} />
             </AlertDialogBody>

@@ -10,10 +10,8 @@ import {
   Input,
   Container,
   Stack,
-  Icon,
   SimpleGrid,
   Grid,
-  Select,
   Flex,
   Spacer,
   Tooltip,
@@ -28,14 +26,18 @@ import {
 import { Link } from 'react-router-dom'
 
 import { AddIcon, CalendarIcon, CloseIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
-import { getBoards, createBoard, removeBoard, updateBoard } from '../utils/api'
-import { LabelSelector } from '../components/LabelSelector'
-import { DeleteBoardButton } from '../components/DeleteBoardButton'
-import { EditBoardButton } from '../components/EditBoardButton'
-import { ColorPicker } from '../components/ColorPicker'
+import { getBoards, createBoard, removeBoard, updateBoard, getPrefs } from '../utils/api'
+import {
+  InitialLaunch,
+  EditBoardButton,
+  DeleteBoardButton,
+  LabelSelector,
+} from '../components/boards'
+import { ColorPicker } from '../components/common'
 
 const Boards = () => {
   const [boards, setBoards] = React.useState([])
+  const [userPref, setUserPref] = React.useState([])
   const [initialPage, setInitialPage] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(false)
   // const { boards, initialPage, error, isLoading, setIsLoading, setInitialPage } = useFetch()
@@ -43,6 +45,8 @@ const Boards = () => {
     try {
       const fetchData = async () => {
         const data = await getBoards()
+        const prefs = await getPrefs()
+        setUserPref(prefs)
         setBoards(data)
         if (data.length === 0) {
           setInitialPage(true)
@@ -58,6 +62,7 @@ const Boards = () => {
       setIsLoading(false)
     }
   }, [])
+
   const handleBoardCreation = async (boardName, boardLabel, boardColor) => {
     const date = new Date()
     await createBoard(
@@ -78,78 +83,7 @@ const Boards = () => {
       setInitialPage(false)
     }
   }
-  const InitialLaunch = ({ createBoard }) => {
-    const [boardName, setBoardName] = React.useState('')
-    const [boardLabel, setBoardLabel] = React.useState('Work')
-    const [boardColor, setBoardColor] = React.useState('#03a9f4')
 
-    return (
-      <Stack as={Box} textAlign="center" spacing={{ base: 8, md: 14 }} py={{ base: 20, md: 36 }}>
-        <Heading
-          fontWeight={600}
-          fontSize={{ base: '2xl', sm: '4xl', md: '5xl' }}
-          lineHeight="110%"
-        >
-          First time here ? <br />
-          <Text as="span" color="blue.400">
-            Let's create your first board!
-          </Text>
-        </Heading>
-        <Stack w="100%" align="center" alignSelf="center">
-          <Input
-            autoFocus
-            maxW="70%"
-            backgroundColor="gray.600"
-            color="white"
-            fontWeight="bold"
-            placeholder="Enter board name"
-            onChange={(event) => setBoardName(event.target.value)}
-            value={boardName}
-          />
-          <Box align="left" position="relative" w="40%">
-            <Text as="span" color="blue.400" fontWeight="bold" alignSelf="left" position="relative">
-              Board options:
-            </Text>
-            <Flex>
-              <Box p="4">Board Label</Box>
-              <Spacer />
-              <Box p="4">
-                <LabelSelector setBoardLabel={setBoardLabel} />
-              </Box>
-            </Flex>
-            <Flex>
-              <Box p="4">Board color:</Box>
-              <Spacer />
-              <Box p="4">
-                <ColorPicker boardColor={boardColor} setBoardColor={setBoardColor} />
-              </Box>
-            </Flex>
-          </Box>
-
-          <Button
-            w="50%"
-            borderRadius="md"
-            bgGradient="linear(to-r, green.500, green.200, blue.500)"
-            _hover={{ bg: 'blue.300' }}
-            _active={{
-              bg: 'blue.300',
-              transform: 'scale(0.98)',
-              borderColor: 'blue.300',
-            }}
-            onClick={(e) => createBoard(boardName, boardLabel, boardColor)}
-          >
-            Create Board !
-          </Button>
-          <Text color="gray.500">
-            Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor
-          </Text>
-          <Button variant="link" colorScheme="blue" size="sm">
-            Learn more
-          </Button>
-        </Stack>
-      </Stack>
-    )
-  }
   const NewBoard = ({ createBoard }) => {
     const [boardName, setBoardName] = React.useState('')
     const [boardLabel, setBoardLabel] = React.useState('Work')
@@ -199,7 +133,12 @@ const Boards = () => {
                   value={boardName}
                 />
                 <Text fontWeight="bold">Board lavel</Text>
-                <LabelSelector p="2" setBoardLabel={setBoardLabel} />
+                <LabelSelector
+                  p="2"
+                  setBoardLabel={setBoardLabel}
+                  boardLabel={boardLabel}
+                  userPrefData={userPref}
+                />
                 <Text fontWeight="bold">Board color</Text>
                 <ColorPicker boardColor={boardColor} setBoardColor={setBoardColor} />
               </AlertDialogBody>
@@ -247,6 +186,7 @@ const Boards = () => {
                   <Spacer />
                   <Box p="2">
                     <EditBoardButton
+                      userPrefData={userPref}
                       boardData={board}
                       updateBoard={updateBoard}
                       getBoards={getBoards}
@@ -271,7 +211,10 @@ const Boards = () => {
                     {board.name}
                   </Heading>
                   <Text>
-                    Stats <br />
+                    Active Lists {board.taskGroups.length}
+                    <br />
+                    Active Tasks {board.tasks.length}
+                    <br />
                     Created: {board.createdAt}
                   </Text>
                 </Link>
@@ -287,7 +230,11 @@ const Boards = () => {
   return (
     <>
       <Container maxW="6xl">
-        {initialPage ? <InitialLaunch createBoard={handleBoardCreation} /> : <BoardsPreview />}
+        {initialPage ? (
+          <InitialLaunch userPref={userPref} createBoard={handleBoardCreation} />
+        ) : (
+          <BoardsPreview />
+        )}
       </Container>
     </>
   )

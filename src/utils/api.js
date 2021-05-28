@@ -18,7 +18,7 @@ export async function createBoard(name, label, color, createdAt) {
 }
 
 export async function getBoards() {
-  return get(`${baseURL}/boards`)
+  return get(`${baseURL}/boards?_embed=taskGroups&_embed=tasks`)
 }
 
 export async function getBoard(boardId) {
@@ -46,6 +46,9 @@ export function createTaskGroup(boardId, name) {
 
 export function getTaskGroups(boardId) {
   return get(`${baseURL}/taskGroups?boardId=${boardId}`)
+}
+export function getTaskGroup(taskGroupId) {
+  return get(`${baseURL}/taskGroups/${taskGroupId}?_embed=taskGroups&_embed=tasks`)
 }
 
 export function updateTaskGroup(taskGroupId, data) {
@@ -113,4 +116,12 @@ export async function removeTask(boardId, taskId) {
   })
   await updateTaskGroups(newTaskGroups)
   return null
+}
+
+// User preferences
+export async function getPrefs() {
+  return get(`${baseURL}/userPref`)
+}
+export async function updatePrefs(data) {
+  return patch(`${baseURL}/userPref/`, data)
 }

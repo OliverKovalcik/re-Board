@@ -10,18 +10,32 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
 } from '@chakra-ui/react'
+import { updatePrefs } from '../../utils/api'
 
-export const LabelSelector = ({ setBoardLabel, value }) => {
+export const LabelSelector = ({ setBoardLabel, value, userPrefData, boardLabel }) => {
   const [isOpen, setIsOpen] = React.useState(false)
   const onClose = () => setIsOpen(false)
   const cancelRef = React.useRef()
+
+  const [userPref, setUserPref] = React.useState(userPrefData)
   const [newLabel, setNewLabel] = React.useState('')
 
+  const handleLabelCreation = () => {
+    const updatedPrefs = {
+      ...userPref,
+      labels: [...userPref.labels, newLabel],
+    }
+    updatePrefs(updatedPrefs)
+    setUserPref(updatedPrefs)
+    setBoardLabel(newLabel)
+    onClose()
+  }
   return (
     <>
-      <Select onChange={(event) => setBoardLabel(event.target.value)} value={value}>
-        <option value="Work">Work</option>
-        <option value="Home">Home</option>
+      <Select onChange={(event) => setBoardLabel(event.target.value)} value={boardLabel}>
+        {userPref.labels?.map((label) => (
+          <option value={label}>{label}</option>
+        ))}
         <option value="option3" onClick={() => setIsOpen(true)}>
           Create new label
         </option>
@@ -35,14 +49,18 @@ export const LabelSelector = ({ setBoardLabel, value }) => {
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              <Input placeholder="Create label" />
+              <Input
+                placeholder="Create label"
+                onChange={(event) => setNewLabel(event.target.value)}
+                value={newLabel}
+              />
             </AlertDialogBody>
 
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onClose}>
                 Cancel
               </Button>
-              <Button colorScheme="blue" onClick={onClose} ml={3}>
+              <Button colorScheme="blue" onClick={(e) => handleLabelCreation(newLabel)} ml={3}>
                 Create
               </Button>
             </AlertDialogFooter>
