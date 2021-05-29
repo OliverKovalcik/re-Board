@@ -120,13 +120,9 @@ export const TaskGroupOptions = ({
 
   const [groupColor, setGroupColor] = React.useState(activeGroupColor)
   React.useEffect(() => {
-    updateTaskGroup(groupId, { color: groupColor })
+    updateTaskGroup(groupId, { color: groupColor, name: updateListName })
     reloadPage()
-  }, [groupColor])
-
-  const handleGroupColor = () => {
-    updateTaskGroup(groupId, { color: groupColor })
-  }
+  }, [groupColor, updateListName])
 
   const handleRemoveList = async (currentListId) => {
     await removeTaskGroup(currentListId)
