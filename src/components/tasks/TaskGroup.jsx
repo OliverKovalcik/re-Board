@@ -49,7 +49,7 @@ export const TaskGroups = ({ taskGroups, reloadPage }) => {
   return (
     <>
       {taskGroups &&
-        taskGroups.map(({ taskIds, id: currentListId, name, boardId }) => {
+        taskGroups.map(({ taskIds, id: currentListId, name, boardId, color }) => {
           return (
             <Grid
               key={currentListId}
@@ -57,7 +57,7 @@ export const TaskGroups = ({ taskGroups, reloadPage }) => {
               boxShadow="md"
               w="300px"
               margin="10px"
-              background="blue.100"
+              background={color}
               textAlign="center"
               overflow="clip"
             >
@@ -69,6 +69,7 @@ export const TaskGroups = ({ taskGroups, reloadPage }) => {
                     tasksIds={taskIds}
                     groupName={name}
                     reloadPage={reloadPage}
+                    activeGroupColor={color}
                   />
                 </Flex>
                 <Text

@@ -40,6 +40,7 @@ export function createTaskGroup(boardId, name) {
     name: name || '',
     boardId,
     taskIds: [],
+    color: '#2196f3',
   }
   return post(`${baseURL}/taskGroups`, defaultTaskGroupData)
 }

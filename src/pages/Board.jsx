@@ -46,6 +46,7 @@ import {
 import { useFetch } from '../hooks'
 import { TaskGroups } from '../components/tasks'
 import { getTask, createTask, getTaskGroups, createTaskGroup, updateTaskGroup } from '../utils/api'
+import bg from '../media/board_BG.jpg'
 
 const Board = () => {
   const { id } = useParams()
@@ -91,12 +92,13 @@ const Board = () => {
           Create new List
         </Button>
       </Heading>
-
-      <Container maxW="8xl">
-        <SimpleGrid display="inline-flex">
-          <TaskGroups taskGroups={data} reloadPage={reloadPage} />
-        </SimpleGrid>
-      </Container>
+      <Box background={`url('${bg}') center / cover no-repeat`} h="100vh">
+        <Container maxW="8xl">
+          <SimpleGrid display="inline-flex">
+            <TaskGroups taskGroups={data} reloadPage={reloadPage} />
+          </SimpleGrid>
+        </Container>
+      </Box>
     </>
   )
 }
