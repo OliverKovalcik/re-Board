@@ -1,6 +1,20 @@
 import * as React from 'react'
 import { useParams } from 'react-router-dom'
-import { Box, Button, Center, CloseButton, Stack, Textarea, Input } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Center,
+  CloseButton,
+  Stack,
+  Textarea,
+  Input,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverCloseButton,
+} from '@chakra-ui/react'
 import PropTypes from 'prop-types'
 
 import { useFetch } from '../../hooks'
@@ -43,12 +57,25 @@ export const Tasks = ({ taskIds, currentListId, reloadComponent }) => {
           .map((tasks) => {
             return (
               <div key={tasks.id}>
-                <Box backgroundColor="green.200" p="2" m="3" borderRadius="10">
+                <Box backgroundColor="whiteAlpha.800" p="2" m="3" borderRadius="10">
                   <Stack direction="row-reverse" m="5px" spacing={5}>
-                    <CloseButton
-                      boxSize={4}
-                      onClick={() => handleRemoveTask(tasks.boardId, tasks.id)}
-                    />
+                    <Popover closeOnBlur={false}>
+                      <PopoverTrigger>
+                        <CloseButton />
+                      </PopoverTrigger>
+                      <PopoverContent>
+                        <PopoverCloseButton />
+                        <PopoverHeader>Are you sure ?</PopoverHeader>
+                        <PopoverBody>
+                          <Button
+                            onClick={() => handleRemoveTask(tasks.boardId, tasks.id)}
+                            colorScheme="red"
+                          >
+                            Delete Task
+                          </Button>
+                        </PopoverBody>
+                      </PopoverContent>
+                    </Popover>
 
                     <Input
                       variant="unstyled"
@@ -73,7 +100,7 @@ export const Tasks = ({ taskIds, currentListId, reloadComponent }) => {
       {/* Tasks */}
       <Center>
         <Button onClick={() => handleCreateNewTask()} size="sm" m="2">
-          Add Task
+          Add New Task
         </Button>
       </Center>
     </>

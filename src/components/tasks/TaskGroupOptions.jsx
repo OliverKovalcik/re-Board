@@ -1,4 +1,5 @@
 import * as React from 'react'
+import PropTypes from 'prop-types'
 import {
   Box,
   Input,
@@ -22,14 +23,7 @@ import {
   AlertDialogOverlay,
   Stack,
 } from '@chakra-ui/react'
-import {
-  CalendarIcon,
-  CloseIcon,
-  DeleteIcon,
-  EditIcon,
-  SettingsIcon,
-  ArrowRightIcon,
-} from '@chakra-ui/icons'
+import { SettingsIcon, ArrowRightIcon } from '@chakra-ui/icons'
 import { getBoards, getTask, updateTaskGroup, updateTask, removeTaskGroup } from '../../utils/api'
 import { ColorPicker } from '../common'
 
@@ -59,7 +53,7 @@ const MoveToBoardDialog = ({ groupId, tasksIds }) => {
       <Box
         as="button"
         m="3"
-        onClick={(e) => {
+        onClick={() => {
           onOpen()
           fetchBoards()
         }}
@@ -93,7 +87,7 @@ const MoveToBoardDialog = ({ groupId, tasksIds }) => {
               </Button>
               <Button
                 colorScheme="blue"
-                onClick={(e) => {
+                onClick={() => {
                   handleMoveList(groupId, tasksIds, targetBoard)
                   onClose()
                 }}
@@ -122,6 +116,7 @@ export const TaskGroupOptions = ({
   React.useEffect(() => {
     updateTaskGroup(groupId, { color: groupColor, name: updateListName })
     reloadPage()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupColor, updateListName])
 
   const handleRemoveList = async (currentListId) => {
@@ -172,7 +167,7 @@ export const TaskGroupOptions = ({
             <Button
               colorScheme="red"
               ref={initialFocusRef}
-              onClick={(e) => handleRemoveList(groupId)}
+              onClick={() => handleRemoveList(groupId)}
             >
               Delete List
             </Button>
@@ -181,4 +176,17 @@ export const TaskGroupOptions = ({
       </Portal>
     </Popover>
   )
+}
+
+TaskGroupOptions.propTypes = {
+  groupId: PropTypes.number,
+  tasksIds: PropTypes.arrayOf(PropTypes.number),
+  groupName: PropTypes.string,
+  reloadPage: PropTypes.func,
+  activeGroupColor: PropTypes.func,
+}
+
+MoveToBoardDialog.propTypes = {
+  groupId: PropTypes.number,
+  tasksIds: PropTypes.arrayOf(PropTypes.number),
 }

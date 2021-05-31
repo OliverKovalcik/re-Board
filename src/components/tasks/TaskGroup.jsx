@@ -1,55 +1,14 @@
 import * as React from 'react'
-import {
-  CloseButton,
-  Box,
-  Input,
-  ButtonGroup,
-  Button,
-  Center,
-  SimpleGrid,
-  Grid,
-  VStack,
-  HStack,
-  Container,
-  Heading,
-  Text,
-  Flex,
-  Tag,
-  Spacer,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  PopoverCloseButton,
-  Portal,
-  Select,
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogOverlay,
-} from '@chakra-ui/react'
-import {
-  AddIcon,
-  CalendarIcon,
-  CloseIcon,
-  DeleteIcon,
-  EditIcon,
-  SettingsIcon,
-  ArrowRightIcon,
-} from '@chakra-ui/icons'
+import { Grid, Heading, Text, Flex, Spacer } from '@chakra-ui/react'
+import PropTypes from 'prop-types'
+
 import { Tasks, TaskGroupOptions } from '.'
-import { getBoards, getTask, updateTaskGroup, updateTask } from '../../utils/api'
 
 export const TaskGroups = ({ taskGroups, reloadPage }) => {
   return (
     <>
       {taskGroups &&
-        taskGroups.map(({ taskIds, id: currentListId, name, boardId, color }) => {
+        taskGroups.map(({ taskIds, id: currentListId, name, color }) => {
           return (
             <Grid
               key={currentListId}
@@ -59,7 +18,10 @@ export const TaskGroups = ({ taskGroups, reloadPage }) => {
               margin="10px"
               background={color}
               textAlign="center"
-              overflow="clip"
+              minH="15vh"
+              maxH="80vh"
+              overflowY="auto"
+              textTransform="uppercase"
             >
               <Heading m="2">
                 <Flex h="10px" p="2">
@@ -80,11 +42,21 @@ export const TaskGroups = ({ taskGroups, reloadPage }) => {
                   {name}
                 </Text>
               </Heading>
-
-              <Tasks taskIds={taskIds} currentListId={currentListId} reloadComponent={reloadPage} />
+              <div>
+                <Tasks
+                  taskIds={taskIds}
+                  currentListId={currentListId}
+                  reloadComponent={reloadPage}
+                />
+              </div>
             </Grid>
           )
         })}
     </>
   )
+}
+
+TaskGroups.propTypes = {
+  reloadPage: PropTypes.func,
+  taskGroups: PropTypes.arrayOf(PropTypes.object),
 }
