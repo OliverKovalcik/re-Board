@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { useParams } from 'react-router-dom'
 import { Box, Button, Center, CloseButton, Stack, Textarea, Input } from '@chakra-ui/react'
+import { CopyIcon } from '@chakra-ui/icons'
 import PropTypes from 'prop-types'
 
 import { useFetch } from '../../hooks'
@@ -24,15 +25,21 @@ export const Tasks = ({ taskIds, currentListId, reloadComponent }) => {
   }
   // Update task
 
-  const handleSaveTaskContent = async (taskID, tasks) => {
-    const newContent = { content: taskContent }
+  const handleSaveTaskContent = async (taskID, tasks, value) => {
+    const newContent = { content: value }
     await updateTask(taskID, { ...tasks, ...newContent })
+    reloadPage()
   }
-  const handleSaveTaskName = async (taskID, tasks) => {
-    const newName = { name: taskName }
+  const handleSaveTaskName = async (taskID, tasks, value) => {
+    const newName = { name: value }
     await updateTask(taskID, { ...tasks, ...newName })
+    reloadPage()
   }
-
+  const handleCopyTask = async (boardId, taskGroupId, task) => {
+    await createTask(boardId, taskGroupId, { ...task, id: null })
+    await reloadPage()
+    await reloadComponent()
+  }
   return (
     <>
       {taskIds &&
@@ -49,19 +56,18 @@ export const Tasks = ({ taskIds, currentListId, reloadComponent }) => {
                       boxSize={4}
                       onClick={() => handleRemoveTask(tasks.boardId, tasks.id)}
                     />
+                    <CopyIcon onClick={() => handleCopyTask(tasks.boardId, currentListId, tasks)} />
 
                     <Input
                       variant="unstyled"
-                      onBlur={() => handleSaveTaskName(tasks.id, tasks)}
-                      onChange={(e) => setTaskName(e.target.value)}
+                      onChange={(e) => handleSaveTaskName(tasks.id, tasks, e.target.value)}
                       placeholder="Title"
                       defaultValue={tasks.name}
                     />
                   </Stack>
 
                   <Textarea
-                    onBlur={() => handleSaveTaskContent(tasks.id, tasks)}
-                    onChange={(e) => setTaskContent(e.target.value)}
+                    onChange={(e) => handleSaveTaskContent(tasks.id, tasks, e.target.value)}
                     placeholder="Write here"
                     focusBorderColor="pink.400"
                     defaultValue={tasks.content}
