@@ -1,58 +1,17 @@
 import * as React from 'react'
 import { useParams } from 'react-router-dom'
-import {
-  CloseButton,
-  Box,
-  Input,
-  ButtonGroup,
-  Button,
-  Center,
-  SimpleGrid,
-  Grid,
-  VStack,
-  HStack,
-  Container,
-  Heading,
-  Text,
-  Flex,
-  Tag,
-  Spacer,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  PopoverCloseButton,
-  Portal,
-  Select,
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogOverlay,
-} from '@chakra-ui/react'
-import {
-  AddIcon,
-  CalendarIcon,
-  CloseIcon,
-  DeleteIcon,
-  EditIcon,
-  SettingsIcon,
-  ArrowRightIcon,
-} from '@chakra-ui/icons'
+import { Box, Input, Button, SimpleGrid, Container, Heading } from '@chakra-ui/react'
 import { useFetch } from '../hooks'
 import { TaskGroups } from '../components/tasks'
-import { getTask, createTask, getTaskGroups, createTaskGroup, updateTaskGroup } from '../utils/api'
+import { getTask, createTask, createTaskGroup, updateTaskGroup, getBoard } from '../utils/api'
 import bg from '../media/board_BG.jpg'
 
 const Board = () => {
   const { id } = useParams()
   const [newListName, setNewListName] = React.useState('')
 
-  const { data, reloadPage } = useFetch(getTaskGroups, id)
+  const { data, reloadPage, setData } = useFetch(getBoard, id)
+  // const { data, reloadPage, setData } = useFetch(getTaskGroups, id)
 
   const handleCreateNewTaskList = () => {
     createTaskGroup(Number(id), newListName).then(() => {
@@ -95,7 +54,13 @@ const Board = () => {
       <Box background={`url('${bg}') center / cover no-repeat`} h="100vh">
         <Container maxW="8xl">
           <SimpleGrid display="inline-flex">
-            <TaskGroups taskGroups={data} reloadPage={reloadPage} />
+            <TaskGroups
+              data={data}
+              taskGroups={data.taskGroups}
+              tasks={data.tasks}
+              setTaskGroups={setData}
+              reloadPage={reloadPage}
+            />
           </SimpleGrid>
         </Container>
       </Box>
