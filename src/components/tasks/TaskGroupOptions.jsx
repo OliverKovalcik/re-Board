@@ -33,7 +33,7 @@ import {
 import { getBoards, getTask, updateTaskGroup, updateTask, removeTaskGroup } from '../../utils/api'
 import { ColorPicker } from '../common'
 
-const MoveToBoardDialog = ({ groupId, tasksIds }) => {
+const MoveToBoardDialog = ({ groupId, tasksIds, reloadPage }) => {
   const [isOpen, setIsOpen] = React.useState(false)
   const onClose = () => setIsOpen(false)
   const onOpen = () => setIsOpen(true)
@@ -51,6 +51,8 @@ const MoveToBoardDialog = ({ groupId, tasksIds }) => {
     tasksId.forEach(async (taskId) => {
       const taskData = await getTask(taskId)
       updateTask(taskId, { ...taskData, boardId: targetBoardId })
+      console.log(targetBoardId)
+      reloadPage()
     })
   }
 
@@ -154,7 +156,7 @@ export const TaskGroupOptions = ({
               onChange={(e) => setUpdateListName(e.target.value)}
             />
             <Stack>
-              <MoveToBoardDialog groupId={groupId} tasksIds={tasksIds} />
+              <MoveToBoardDialog groupId={groupId} tasksIds={tasksIds} reloadPage={reloadPage} />
               <Box>
                 Change list color
                 <ColorPicker w="10px" boardColor={groupColor} setBoardColor={setGroupColor} />

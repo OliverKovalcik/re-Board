@@ -96,6 +96,7 @@ export const TaskGroups = ({ taskGroups, reloadPage, setTaskGroups, tasks, data 
                         currentListId={currentListId}
                         reloadComponent={reloadPage}
                         boardId={boardId}
+                        taskGroups={taskGroups}
                       />
                     </Grid>
                   </ul>
