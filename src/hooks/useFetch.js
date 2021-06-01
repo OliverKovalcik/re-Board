@@ -1,4 +1,3 @@
-
 import * as React from 'react'
 
 export const useFetch = (fn1, id) => {
@@ -26,6 +25,6 @@ export const useFetch = (fn1, id) => {
     error,
     isLoading,
     reloadPage,
-
+    setData,
   }
 }
