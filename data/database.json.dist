@@ -21,5 +21,12 @@
       "date": "2021-02-11",
       "id": 2
     }
-  ]
+  ],
+  "userPref": {
+    "labels": [
+      "Work",
+      "Home",
+      "Personal"
+    ]
+  }
 }
