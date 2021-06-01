@@ -1,63 +1,44 @@
 # Sudo Academy: Capstone Project
 
-Congratulations! You're almost there but we have one last task for you before
-your graduation day. The best news? You can keep your project after the course's
-over and add it to your portfolio! Ain't that cool?
+### OVERVIEW
+RE-Board is a student project with aim to create collaboration tool that organizes your projects into boards. Imagine a white board, filled with lists of sticky notes, with each note as a task for you and your team. 
 
-It'll give you the much needed experience of working on a real-world project with
-a strict and non-negotiable deadline while providing the necessary freedom to get
-your wheels of creativity spinning.
-
-## Task Description
-
-Given the basic application scaffolding, **your goal is to build a simple task management
-tool similar to [Trello](https://trello.com/en)**. If you haven't heard about Trello up
-until now, now would be a good time to go check it out.
-
-Worry not, you don't have to build a fully-featured clone of Trello. While there are
-a few functional requirements you will have to meet but we'd like to encourage you to
-make it your own unique creation in the first place.
-
-Now, without further ado, go ahead and [set up a new Trello account for free](https://trello.com/signup).
-Other than getting some inspiration, you'll also be using Trello to manage your project
-until your own app is ready for the prime time. Your project coordinator should've given
-you access to a templated Trello board which reflects the best practices in the world
-of digital project management.
-
-### Functional Requirements
+### Funcional Features
 
 These are non-negotiable project requirements that you HAVE TO meet to consider your
 project shippable:
-
-- Creating new boards
-- Editing boards
-- Deleting boards
+# Implemented
+- Creating / Editing / Deleting new boards
+- Board labels
+- Color management of board and list
 - Creating new lists within a board
-- Editing lists
-- Delete a list
-- Creating new cards within a list
-- Edit a card
+- Editing and deleting lists
+- Create / edit / copy  new cards within a list
+- Moving list to another boards or moving tasks to another lists
+
+# To be implemented
+- User management 
+- Multiple versions based on subscription
+- Reminders
+- Priority labels
+- Action history log
 - Archiving cards
-- Drag and drop cards between lists
+- Drag and drop cards between lists  - already in testing phase
+
+# Test versions is deployed on heroku  
+   keep in mind there is a lot of desing elements to be just done.
+   https://re-board.herokuapp.com/
+   
+ ### Image preview
+ ![Screen Shot 2021-06-02 at 13 53 12-fullpage](https://user-images.githubusercontent.com/29810931/120318998-cd6f0500-c2e0-11eb-8a3f-61c7cc8e60d9.png)
+
+   ![Screen Shot 2021-06-02 at 13 53 02-fullpage](https://user-images.githubusercontent.com/29810931/120319043-d95ac700-c2e0-11eb-9da6-df876191a101.png)
+![Screen Shot 2021-06-02 at 13 52 46-fullpage](https://user-images.githubusercontent.com/29810931/120319046-db248a80-c2e0-11eb-981b-35e59d7de428.png)!![Screen Shot 2021-06-02 at 13 57 24-fullpage](https://user-images.githubusercontent.com/29810931/120319465-54bc7880-c2e1-11eb-935f-f01206f9bceb.png)
 
 
-### Bring Your Own Idea™️
 
-As stated earlier, you're more than encouraged to come up with your own enhancements
-and features. Here are a few examples for additional features we thought are nice
-to have:
 
-- Copy
-- Move to another board
-- Share
-- Stats
-- Users
-- Code-splitting
-
-## Project Overview
-
-In this section, you'll find relevant project information and a getting started guide.
-
+   
 ### Environment Setup
 
 1. Fork the repository using the "Use this template" button
@@ -81,15 +62,6 @@ In this section, you'll find relevant project information and a getting started 
 7. Head out to the Trello board, pick a task and start working on it, then rinse and repeat.
 8. ```code REPONAME``` and install the recommended extension
 
-## Deployment
-
-You can deploy this repository to Heroku by clicking the button below.
-
-> Please note this button won't work from within a private repository.
-> Thus make sure your repo is public before clicking the button. See
-> the following guide to [learn about possible workarounds](https://devcenter.heroku.com/articles/heroku-button#private-github-repos).
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 ## Documentation
 
