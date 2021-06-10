@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { Box, Input, Button, SimpleGrid, Container, Heading } from '@chakra-ui/react'
 import { useFetch } from '../hooks'
 import { TaskGroups } from '../components/tasks'
-import { getTask, createTask, createTaskGroup, updateTaskGroup, getBoard } from '../utils/api'
+import { createTaskGroup, getBoard } from '../utils/api'
 import bg from '../media/board_BG.jpg'
 
 const Board = () => {
@@ -11,26 +11,12 @@ const Board = () => {
   const [newListName, setNewListName] = React.useState('')
 
   const { data, reloadPage, setData } = useFetch(getBoard, id)
-  // const { data, reloadPage, setData } = useFetch(getTaskGroups, id)
 
   const handleCreateNewTaskList = () => {
     createTaskGroup(Number(id), newListName).then(() => {
       setNewListName('')
       reloadPage()
     })
-  }
-
-  const handleCopyList = (boardId, listId, listName, tasksId) => {
-    // const tasksData = []
-
-    tasksId.forEach(async (taskId) => {
-      const taskData = await getTask(taskId)
-      // tasksData.push(taskData)
-      await createTask(boardId, listId, { name: taskData.name, content: taskData.content })
-      await updateTaskGroup(listId)
-    })
-
-    reloadPage()
   }
 
   return (

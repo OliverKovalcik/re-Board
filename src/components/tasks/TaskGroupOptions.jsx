@@ -1,4 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import * as React from 'react'
+import PropTypes from 'prop-types'
 import {
   Box,
   Input,
@@ -22,14 +24,7 @@ import {
   AlertDialogOverlay,
   Stack,
 } from '@chakra-ui/react'
-import {
-  CalendarIcon,
-  CloseIcon,
-  DeleteIcon,
-  EditIcon,
-  SettingsIcon,
-  ArrowRightIcon,
-} from '@chakra-ui/icons'
+import { SettingsIcon, ArrowRightIcon } from '@chakra-ui/icons'
 import { getBoards, getTask, updateTaskGroup, updateTask, removeTaskGroup } from '../../utils/api'
 import { ColorPicker } from '../common'
 
@@ -47,11 +42,10 @@ const MoveToBoardDialog = ({ groupId, tasksIds, reloadPage }) => {
   }
 
   const handleMoveList = async (listId, tasksId, targetBoardId) => {
-    updateTaskGroup(listId, { boardId: targetBoardId })
+    updateTaskGroup(listId, { boardId: Number(targetBoardId) })
     tasksId.forEach(async (taskId) => {
       const taskData = await getTask(taskId)
-      updateTask(taskId, { ...taskData, boardId: targetBoardId })
-      console.log(targetBoardId)
+      updateTask(taskId, { ...taskData, boardId: Number(targetBoardId) })
       reloadPage()
     })
   }
@@ -61,7 +55,7 @@ const MoveToBoardDialog = ({ groupId, tasksIds, reloadPage }) => {
       <Box
         as="button"
         m="3"
-        onClick={(e) => {
+        onClick={() => {
           onOpen()
           fetchBoards()
         }}
@@ -95,7 +89,7 @@ const MoveToBoardDialog = ({ groupId, tasksIds, reloadPage }) => {
               </Button>
               <Button
                 colorScheme="blue"
-                onClick={(e) => {
+                onClick={() => {
                   handleMoveList(groupId, tasksIds, targetBoard)
                   onClose()
                 }}
@@ -174,7 +168,7 @@ export const TaskGroupOptions = ({
             <Button
               colorScheme="red"
               ref={initialFocusRef}
-              onClick={(e) => handleRemoveList(groupId)}
+              onClick={() => handleRemoveList(groupId)}
             >
               Delete List
             </Button>
@@ -183,4 +177,18 @@ export const TaskGroupOptions = ({
       </Portal>
     </Popover>
   )
+}
+
+MoveToBoardDialog.propTypes = {
+  groupId: PropTypes.number,
+  tasksIds: PropTypes.arrayOf(),
+  reloadPage: PropTypes.func,
+}
+
+TaskGroupOptions.propTypes = {
+  groupId: PropTypes.number,
+  tasksIds: PropTypes.arrayOf(),
+  reloadPage: PropTypes.func,
+  groupName: PropTypes.string,
+  activeGroupColor: PropTypes.string,
 }
